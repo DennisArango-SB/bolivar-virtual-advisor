@@ -17,9 +17,9 @@ const NeedForm = () => {
 
   const exampleNeeds = [
     { icon: Heart, text: "Quiero proteger a mis hijos" },
-    { icon: Car, text: "Necesito seguro para mi vehículo" },
-    { icon: Home, text: "Quiero asegurar mi hogar" },
-    { icon: Shield, text: "Busco un seguro de vida" }
+    { icon: Shield, text: "Quiero asegurar a mi mamá que ya está mayor" },
+    { icon: Car, text: "Me gusta hacer deporte, quiero algo que me cubra en caso de accidente." },
+    { icon: Home, text: "Quiero un seguro que me devuelva parte de mi dinero" }
   ];
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -168,6 +168,13 @@ const NeedForm = () => {
               );
             })}
           </div>
+        </div>
+
+        {/* Nota explicativa */}
+        <div className="bg-muted/50 rounded-lg p-3 mb-6">
+          <p className="text-sm text-muted-foreground text-center">
+            💡 <strong>Tip:</strong> Entre más detalle nos proporciones sobre tu situación específica, mejor podremos recomendarte el seguro ideal para ti.
+          </p>
         </div>
 
         {/* Campo de necesidad */}
