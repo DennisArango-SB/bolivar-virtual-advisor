@@ -2,10 +2,14 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
 import { Send, Shield, Heart, Car, Home } from 'lucide-react';
 
 const NeedForm = () => {
+  const [nombre, setNombre] = useState('');
+  const [correo, setCorreo] = useState('');
   const [necesidad, setNecesidad] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
@@ -21,6 +25,24 @@ const NeedForm = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
+    if (!nombre.trim()) {
+      toast({
+        title: "Campo requerido",
+        description: "Por favor, ingresa tu nombre.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (!correo.trim()) {
+      toast({
+        title: "Campo requerido",
+        description: "Por favor, ingresa tu correo electrónico.",
+        variant: "destructive",
+      });
+      return;
+    }
+
     if (!necesidad.trim()) {
       toast({
         title: "Campo requerido",
@@ -55,7 +77,13 @@ const NeedForm = () => {
       
       if (recomendacion) {
         // Redirigir automáticamente a la página de resultado
-        navigate('/resultado', { state: { recomendacion } });
+        navigate('/resultado', { 
+          state: { 
+            recomendacion,
+            nombre: nombre.trim(),
+            correo: correo.trim()
+          } 
+        });
       } else {
         toast({
           title: "Solicitud enviada",
@@ -63,6 +91,8 @@ const NeedForm = () => {
         });
       }
       
+      setNombre('');
+      setCorreo('');
       setNecesidad('');
     } catch (error) {
       toast({
@@ -113,16 +143,39 @@ const NeedForm = () => {
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <Label htmlFor="nombre">Nombre completo</Label>
+            <Input
+              id="nombre"
+              type="text"
+              value={nombre}
+              onChange={(e) => setNombre(e.target.value)}
+              placeholder="Ingresa tu nombre"
+              className="mt-1"
+            />
+          </div>
+          <div>
+            <Label htmlFor="correo">Correo electrónico</Label>
+            <Input
+              id="correo"
+              type="email"
+              value={correo}
+              onChange={(e) => setCorreo(e.target.value)}
+              placeholder="tu@email.com"
+              className="mt-1"
+            />
+          </div>
+        </div>
+
         <div>
-          <label htmlFor="necesidad" className="block text-sm font-medium text-foreground mb-2">
-            Describe tu necesidad
-          </label>
+          <Label htmlFor="necesidad">Describe tu necesidad</Label>
           <Textarea
             id="necesidad"
             value={necesidad}
             onChange={(e) => setNecesidad(e.target.value)}
             placeholder="Por ejemplo: Quiero proteger a mis hijos con un seguro educativo..."
-            className="min-h-[120px] resize-none"
+            className="min-h-[120px] resize-none mt-1"
             maxLength={500}
           />
           <div className="text-xs text-muted-foreground mt-1 text-right">
