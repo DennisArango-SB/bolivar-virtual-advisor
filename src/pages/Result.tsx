@@ -35,7 +35,7 @@ const Result = () => {
       producto_recomendado: location.state?.recomendacion
     };
 
-    fetch('https://mi-n8n-servidor.com/webhook/cotizacion', {
+    fetch('https://primary-production-babea.up.railway.app/webhook-test/c4cc6967-1a3e-4d41-b90a-d02f497b7d8f', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
