@@ -1,4 +1,4 @@
-import { Shield } from 'lucide-react';
+import logoImage from '@/assets/seguros-bolivar-logo.png';
 
 const Header = () => {
   return (
@@ -6,8 +6,8 @@ const Header = () => {
       <div className="container mx-auto px-4 py-4">
         <div className="flex items-center justify-center sm:justify-start">
           <div className="flex items-center space-x-3">
-            <div className="bg-primary-foreground rounded-full p-2">
-              <Shield className="h-8 w-8 text-primary" />
+            <div className="bg-white rounded-full p-2">
+              <img src={logoImage} alt="Seguros Bolívar" className="h-8 w-8 object-contain" />
             </div>
             <div className="text-center sm:text-left">
               <h1 className="text-xl sm:text-2xl font-bold">Seguros Bolívar</h1>
