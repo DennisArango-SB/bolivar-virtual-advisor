@@ -120,29 +120,8 @@ const NeedForm = () => {
         </p>
       </div>
 
-      {/* Ejemplos de necesidades */}
-      <div className="mb-6">
-        <p className="text-sm font-medium text-muted-foreground mb-3">
-          Ejemplos de necesidades:
-        </p>
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-          {exampleNeeds.map((example, index) => {
-            const IconComponent = example.icon;
-            return (
-              <button
-                key={index}
-                onClick={() => handleExampleClick(example.text)}
-                className="flex items-center space-x-2 p-3 rounded-lg border border-border hover:bg-accent hover:border-primary/30 transition-colors text-left text-sm"
-              >
-                <IconComponent className="h-4 w-4 text-primary flex-shrink-0" />
-                <span className="text-foreground">{example.text}</span>
-              </button>
-            );
-          })}
-        </div>
-      </div>
-
       <form onSubmit={handleSubmit} className="space-y-6">
+        {/* Campos de información personal */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <Label htmlFor="nombre">Nombre completo</Label>
@@ -168,6 +147,30 @@ const NeedForm = () => {
           </div>
         </div>
 
+        {/* Ejemplos de necesidades */}
+        <div className="mb-6">
+          <p className="text-sm font-medium text-muted-foreground mb-3">
+            Ejemplos de necesidades:
+          </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            {exampleNeeds.map((example, index) => {
+              const IconComponent = example.icon;
+              return (
+                <button
+                  key={index}
+                  type="button"
+                  onClick={() => handleExampleClick(example.text)}
+                  className="flex items-center space-x-2 p-3 rounded-lg border border-border hover:bg-accent hover:border-primary/30 transition-colors text-left text-sm"
+                >
+                  <IconComponent className="h-4 w-4 text-primary flex-shrink-0" />
+                  <span className="text-foreground">{example.text}</span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Campo de necesidad */}
         <div>
           <Label htmlFor="necesidad">Describe tu necesidad</Label>
           <Textarea
