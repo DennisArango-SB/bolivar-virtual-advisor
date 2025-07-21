@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
@@ -8,6 +9,7 @@ const NeedForm = () => {
   const [necesidad, setNecesidad] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const exampleNeeds = [
     { icon: Heart, text: "Quiero proteger a mis hijos" },
@@ -46,10 +48,20 @@ const NeedForm = () => {
         throw new Error(`Error del servidor: ${response.status}`);
       }
 
-      toast({
-        title: "Solicitud enviada",
-        description: "Hemos recibido tu necesidad. Un asesor se pondrá en contacto contigo pronto.",
-      });
+      const result = await response.json();
+      
+      // Verificar que existe el campo recomendacion u output
+      const recomendacion = result.output || result.recomendacion;
+      
+      if (recomendacion) {
+        // Redirigir automáticamente a la página de resultado
+        navigate('/resultado', { state: { recomendacion } });
+      } else {
+        toast({
+          title: "Solicitud enviada",
+          description: "Hemos recibido tu necesidad. Un asesor se pondrá en contacto contigo pronto.",
+        });
+      }
       
       setNecesidad('');
     } catch (error) {
