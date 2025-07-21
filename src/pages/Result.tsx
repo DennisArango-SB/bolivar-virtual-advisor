@@ -32,8 +32,7 @@ const Result = () => {
       nombre: location.state?.nombre,
       telefono: location.state?.telefono,
       correo: location.state?.correo,
-      producto_recomendado: location.state?.recomendacion,
-      respuesta_usuario: "si"
+      producto_recomendado: location.state?.recomendacion
     };
 
     fetch('https://primary-production-babea.up.railway.app/webhook-test/c4cc6967-1a3e-4d41-b90a-d02f497b7d8f', {
@@ -56,28 +55,6 @@ const Result = () => {
 
   const handleDecline = () => {
     setUserChoice('no');
-    
-    const userData = {
-      nombre: location.state?.nombre,
-      telefono: location.state?.telefono,
-      correo: location.state?.correo,
-      producto_recomendado: location.state?.recomendacion,
-      respuesta_usuario: "no"
-    };
-
-    fetch('https://primary-production-babea.up.railway.app/webhook-test/c4cc6967-1a3e-4d41-b90a-d02f497b7d8f', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(userData),
-    })
-    .then(response => {
-      console.log('Decline response sent successfully');
-    })
-    .catch(error => {
-      console.error('Error sending decline response:', error);
-    });
   };
 
   if (!recomendacion) {
