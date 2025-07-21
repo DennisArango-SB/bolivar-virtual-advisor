@@ -1,15 +1,17 @@
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { ArrowLeft, CheckCircle, Lightbulb } from 'lucide-react';
+import { ArrowLeft, CheckCircle, Lightbulb, Check, X } from 'lucide-react';
 
 const Result = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const recomendacion = location.state?.recomendacion;
+  const [userChoice, setUserChoice] = useState<'yes' | 'no' | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     // Si no hay recomendación, redirigir al inicio
@@ -20,6 +22,39 @@ const Result = () => {
 
   const handleBackToHome = () => {
     navigate('/');
+  };
+
+  const handleQuoteRequest = () => {
+    setIsLoading(true);
+    setUserChoice('yes');
+    
+    const userData = {
+      nombre: location.state?.nombre,
+      telefono: location.state?.telefono,
+      correo: location.state?.correo,
+      producto_recomendado: location.state?.recomendacion
+    };
+
+    fetch('https://mi-n8n-servidor.com/webhook/cotizacion', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userData),
+    })
+    .then(response => {
+      console.log('Quote request sent successfully');
+    })
+    .catch(error => {
+      console.error('Error sending quote request:', error);
+    })
+    .finally(() => {
+      setIsLoading(false);
+    });
+  };
+
+  const handleDecline = () => {
+    setUserChoice('no');
   };
 
   if (!recomendacion) {
@@ -56,11 +91,53 @@ const Result = () => {
                   </div>
                 </div>
               </div>
+
+              {/* Botones de decisión */}
+              {userChoice === null && (
+                <div className="flex flex-col sm:flex-row gap-4 justify-center items-center pt-4">
+                  <Button 
+                    onClick={handleQuoteRequest}
+                    size="lg"
+                    disabled={isLoading}
+                    className="flex items-center space-x-2 bg-primary hover:bg-primary/90"
+                  >
+                    <Check className="h-4 w-4" />
+                    <span>{isLoading ? 'Enviando...' : 'Sí, quiero cotizar'}</span>
+                  </Button>
+                  <Button 
+                    onClick={handleDecline}
+                    variant="outline"
+                    size="lg"
+                    className="flex items-center space-x-2"
+                  >
+                    <X className="h-4 w-4" />
+                    <span>No, gracias</span>
+                  </Button>
+                </div>
+              )}
+
+              {/* Mensajes de respuesta */}
+              {userChoice === 'yes' && (
+                <div className="text-center pt-4">
+                  <p className="text-green-600 font-medium text-lg">
+                    ✅ ¡Gracias! Un asesor se contactará contigo lo más pronto posible.
+                  </p>
+                </div>
+              )}
+
+              {userChoice === 'no' && (
+                <div className="text-center pt-4">
+                  <p className="text-muted-foreground text-lg">
+                    😔 Lamentamos que no desees continuar. Si cambias de opinión, en Seguros Bolívar estaremos listos para ayudarte.
+                  </p>
+                </div>
+              )}
               
-              <div className="flex justify-center pt-4">
+              <div className="flex justify-center pt-6">
                 <Button 
                   onClick={handleBackToHome}
                   size="lg"
+                  variant="secondary"
                   className="flex items-center space-x-2"
                 >
                   <ArrowLeft className="h-4 w-4" />
