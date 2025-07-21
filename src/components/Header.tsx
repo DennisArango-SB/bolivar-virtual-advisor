@@ -1,4 +1,4 @@
-import logoImage from '@/assets/seguros-bolivar-logo.png';
+import logoImage from '/lovable-uploads/9ef9747c-5dfc-499b-88ce-94061126da59.png';
 
 const Header = () => {
   return (
